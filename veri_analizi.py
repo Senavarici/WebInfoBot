@@ -14,7 +14,7 @@ def checkmail(email):
 db = input("isim gir: ")
 conn = sqlite.connect("{}.db".format(db))
 cs = conn.cursor()
-cs.execute("create table if not exists Data (id integer primary key autoincrement, url, email, phone)") 
+cs.execute("create table if not exists data (id integer primary key autoincrement, url, email, phone)") 
 url = input("site linki gir: ")
 urls = set()
 def AllLinks(url):   
@@ -33,11 +33,11 @@ def AllLinks(url):
         soup = BeautifulSoup(page2.text, 'html.parser')
         if page2.status_code == 200:
             cs.execute("create table if not exists Code_200 (id integer primary key autoincrement, url)")
-            cs.execute("insert into Code_200 values (null,?)",[url])
+            cs.execute("insert into code_200 values (null,?)",[url])
             conn.commit()      
         else:
             cs.execute("create table if not exists Code_404 (id integer primary key autoincrement, url)")
-            cs.execute("insert into Code_404 values (null,?)",[url])
+            cs.execute("insert into code_404 values (null,?)",[url])
             conn.commit()
                   
         email = re.findall("((?:[\w\.\-\+\_]+)@(?:[a-zA-Z0-9\.\-]+))",str(soup)) 
