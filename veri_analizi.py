@@ -28,15 +28,16 @@ def AllLinks(url):
         if str(i).startswith("https") == False and str(i).startswith("/"):
             urls.add(url+str(i))
             
+    cs.execute("create table if not exists code_200 (id integer primary key autoincrement, url)")      
+    cs.execute("create table if not exists code_404 (id integer primary key autoincrement, url)") 
+    conn.commit() 
     for url in urls:        
         page2 = requests.get(url)
         soup = BeautifulSoup(page2.text, 'html.parser')
-        if page2.status_code == 200:
-            cs.execute("create table if not exists Code_200 (id integer primary key autoincrement, url)")
+        if page2.status_code == 200:           
             cs.execute("insert into code_200 values (null,?)",[url])
             conn.commit()      
-        else:
-            cs.execute("create table if not exists Code_404 (id integer primary key autoincrement, url)")
+        else:           
             cs.execute("insert into code_404 values (null,?)",[url])
             conn.commit()
                   
